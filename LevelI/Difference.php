@@ -30,17 +30,39 @@ class Difference
      */
     public function whatIsTheCostPlease()
     {
-        // @ TODO
+        
         $lenA = strlen($this->a);
         $lenB = strlen($this->b);
 
-        for ($i = 1; $i <= $lenA; ++$i) {
-            for ($j = 1; $j <= $lenB; ++$j) {
-                $c = ($this->a[$i - 1] === $this->b[$j - 1]) ? 0 : 1;
-                $matrix[$i][$j] = 0;
-            }
-        }
+        $cost = 0;
 
-        return $matrix[$lenA][$lenB];
+        $cost = levenshtein($this->a, $this->b);
+        return $cost;
+
+        if ($lenA > $lenB) {
+            for ($i = 0; $i < $lenB; $i++) {
+                if ($this->b[$i] != $this->a[$i]) {
+                    $cost++;
+                }
+            }
+            $cost = $cost + ($lenA - $lenB);
+            return $cost;
+        } elseif ($lenA < $lenB) {
+            $cost = $lenB - $lenA;
+            for ($i = 0; $i < $lenA; $i++) {
+                if ($this->a[$i] != $this->b[$i]) {
+                    $cost++;
+                }
+            }
+            return $cost;
+        }
+        else {
+            for ($i = 0; $i < $lenA; $i++) {
+                if ($this->a[$i] != $this->b[$i]) {
+                    $cost++;
+                }
+            }
+            return $cost;
+        }
     }
 }
